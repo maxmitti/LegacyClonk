@@ -5,6 +5,13 @@ on:
     branches: [ 'master' ]
   pull_request:
     branches: '*'
+  workflow_dispatch:
+    inputs:
+      docs_repository:
+        description: 'Which docs repository to validate against'
+        required: true
+        type: string
+        default: legacyclonk/lcdocs
 
 defaults:
   run:
@@ -21,7 +28,7 @@ jobs:
       - name: Checkout docs repo
         uses: actions/checkout@v6
         with:
-          repository: legacyclonk/lcdocs
+          repository: ${{ inputs.docs_repo || 'legacyclonk/lcdocs' }}
           path: lcdocs
 
       - name: "Ubuntu 18.04: Setup chroot"
