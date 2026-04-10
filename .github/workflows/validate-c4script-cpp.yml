@@ -39,6 +39,13 @@ jobs:
           sudo mount --bind . chroot/$PWD
           echo "CHROOT=$PWD/.github/workflows/Linux-x86-chroot.sh" >> $GITHUB_ENV
 
+      - name: Setup saxonb-xslt, python, gettext, Mako (Python templating engine), typescript compiler, sass (scss compiler)
+        run: |
+          $CHROOT sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends libsaxonb-java python-libxml2 gettext openjdk-11-jre-headless python3-mako curl -y
+          $CHROOT cd /usr/local \&\& \(curl -L https://unofficial-builds.nodejs.org/download/release/v21.7.3/node-v21.7.3-linux-x86.tar.xz \| tar --strip-components=1 -xJ\)
+          echo "PATH=/usr/local/bin:$PATH" >> $GITHUB_ENV
+          $CHROOT cd lcdocs/developer \&\& npm ci
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
