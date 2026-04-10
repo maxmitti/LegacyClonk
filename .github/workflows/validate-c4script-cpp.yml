@@ -11,7 +11,7 @@ on:
         description: 'Which docs repository to validate against'
         required: true
         type: string
-        default: legacyclonk/lcdocs
+        default: maxmitti/lcdocs
 
 defaults:
   run:
@@ -28,7 +28,7 @@ jobs:
       - name: Checkout docs repo
         uses: actions/checkout@v6
         with:
-          repository: ${{ inputs.docs_repository || 'legacyclonk/lcdocs' }}
+          repository: ${{ inputs.docs_repository || 'maxmitti/lcdocs' }}
           path: lcdocs
 
       - name: "Ubuntu 18.04: Setup chroot"
@@ -55,14 +55,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          (cd .github/workflows/C4ScriptDocAnalyzer && npm install)
-          $CHROOT sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends xsltproc python-libxml2 gettext -y
+          cd .github/workflows/C4ScriptDocAnalyzer && npm install
 
       - name: Build function list
         run: $CHROOT make -C lcdocs -j$(nproc)
 
       - name: Copy generated Functions.txt
-        run: cp lcdocs/Functions.txt .github/workflows/C4ScriptDocAnalyzer/lcdocs_functions.txt
+        run: cp lcdocs/lcdocs_summary.json .github/workflows/C4ScriptDocAnalyzer/
 
       - name: Run analyze script
         id: analyze

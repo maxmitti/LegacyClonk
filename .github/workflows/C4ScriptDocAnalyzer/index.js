@@ -7,12 +7,7 @@ const fs = require('fs');
 // Return=bool
 // Parameter=object pObj, int iPlr
 // DescDE=aufgerufene Eingabezeile.
-const lcdocsFunctions = readAndFilterFile('.github/workflows/C4ScriptDocAnalyzer/lcdocs_functions.txt', [
-    {
-        regex: /^Name=(\w*)/gm,
-        captureGroup: 1,
-    }
-]);
+const lcdocsFunctions = getDocumentedNames('.github/workflows/C4ScriptDocAnalyzer/lcdocs_summary.json');
 console.log(`Loaded generated file with C4Script functions documented in the current lcdocs master https://github.com/legacyclonk/lcdocs`);
 
 // The following array will contain all C4Script functions defined in C4Script.cpp.
@@ -94,6 +89,13 @@ if (sumEntities === sumProcessed) {
     console.log(`\x1b[41m\x1b[30mERROR: The sum of functions and constants is ${sumEntities} but ${sumProcessed} where processed.
     Make sure that the set of parsed functions is distinct!\x1b[0m`);
     process.exit(2)
+}
+
+function getDocumentedNames(filepath) {
+    const data = JSON.parse(fs.readFileSync(filepath).toString());
+    var functionNames = data.script.functions.map(f => f.name);
+    var constantNames = data.script.constants.map(c => c.name);
+    return [...functionNames, ...constantNames];
 }
 
 function readAndFilterFile(filepath, captures) {
