@@ -1,2 +1,2 @@
 #!/bin/bash
-# nothing needed
+echo "CMAKE_CONFIGURE_ARGS=-DUSE_SDL_MAINLOOP=On" >> $GITHUB_ENV
