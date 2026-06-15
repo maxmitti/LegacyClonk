@@ -9,4 +9,4 @@ chmod +x linuxdeploy linuxdeploy-plugin-gtk.sh
 
 convert -resize 512x512 src/res/lc.png legacyclonk.png
 
-OUTPUT=output/clonk.AppImage ./linuxdeploy --plugin gtk --desktop-file=src/res/io.github.legacyclonk.LegacyClonk.desktop --icon-file=legacyclonk.png --appdir=AppDir --executable=build/clonk --output=appimage
+OUTPUT=output/clonk.AppImage ./linuxdeploy --desktop-file=src/res/io.github.legacyclonk.LegacyClonk.desktop --icon-file=legacyclonk.png --appdir=AppDir --executable=build/clonk --output=appimage
